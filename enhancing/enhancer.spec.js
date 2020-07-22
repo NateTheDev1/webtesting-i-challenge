@@ -76,3 +76,27 @@ describe("fail", () => {
     expect(actual.enhancement).toBe(expected);
   });
 });
+
+describe("get", () => {
+  it("does not mofify the name if enhancement is 0", () => {
+    const item = {
+      name: "Item 1",
+      enhancement: 0,
+      durability: 35,
+    };
+    const expected = "Item 1";
+    const actual = enhancer.get(item);
+    expect(actual.name).toBe(expected);
+  });
+
+  it("modifies the name to include enhancement level if it is greater than 0", () => {
+    const item = {
+      name: "Item 1",
+      enhancement: 5,
+      durability: 35,
+    };
+    const expected = "[+5] Item 1";
+    const actual = enhancer.get(item);
+    expect(actual.name).toBe(expected);
+  });
+});
