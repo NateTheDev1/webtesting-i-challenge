@@ -11,6 +11,14 @@ function success(item) {
 }
 
 function fail(item) {
+  if (item.enhancement < 15) {
+    item.enhancement -= 5;
+  } else if (item.enhancement > 15 && item.enhancement <= 16) {
+    item.enhancement -= 10;
+  } else if (item.enhancement > 16) {
+    item.enhancement--;
+  }
+
   return { ...item };
 }
 
