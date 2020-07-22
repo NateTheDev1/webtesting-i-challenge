@@ -6,11 +6,38 @@ function App() {
   const [sword, setSword] = useState({
     name: "Iron Sword",
     durability: 63,
+    enhancement: 10,
   });
 
   const [coins, setCoins] = useState(100);
 
   const [error, setError] = useState("");
+
+  function get() {
+    if (sword.enhancement > 0) {
+      setSword({ ...sword, name: `[+${sword.enhancement}] ${sword.name}` });
+    }
+  }
+
+  function success() {
+    if (sword.enhancement !== 20) {
+      setSword({ ...sword, enhancement: sword.enhancement++ });
+    }
+  }
+
+  function fail() {
+    if (sword.enhancement < 15) {
+      setSword({ ...sword, enhancement: (sword.enhancement -= 5) });
+    } else if (sword.enhancement > 15 && sword.enhancement <= 16) {
+      setSword({ ...sword, enhancement: (sword.enhancement -= 10) });
+    } else if (sword.enhancement > 16) {
+      setSword({ ...sword, enhancement: sword.enhancement-- });
+    }
+  }
+
+  function repair() {
+    setSword({ ...sword, durability: 100 });
+  }
 
   function pointAt(e) {
     if (e.target.name === "enhance") {
@@ -30,9 +57,22 @@ function App() {
     }
 
     if (e.target.name === "repair") {
-      setCoins(coins - 5);
-      document.getElementById("sword").classList.remove("img-right");
-      document.getElementById("sword").classList.add("img-left");
+      if (coins > 5 && sword.durability < 100) {
+        setCoins(coins - 5);
+        document.getElementById("sword").classList.remove("img-right");
+        document.getElementById("sword").classList.add("img-left");
+        repair();
+      } else {
+        if (!sword.durability < 100) {
+          setError("Durability is already at 100");
+        } else {
+          setError("Not Enough Coins");
+        }
+
+        setTimeout(() => {
+          setError("");
+        }, 3000);
+      }
     }
   }
 
