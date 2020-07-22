@@ -4,9 +4,10 @@ import Rotator from "./Rotator";
 
 function App() {
   const [sword, setSword] = useState({
+    initialName: "Iron Sword",
     name: "Iron Sword",
     durability: 63,
-    enhancement: 10,
+    enhancement: 0,
   });
 
   const [coins, setCoins] = useState(100);
@@ -15,7 +16,12 @@ function App() {
 
   function get() {
     if (sword.enhancement > 0) {
-      setSword({ ...sword, name: `[+${sword.enhancement}] ${sword.name}` });
+      setSword({
+        ...sword,
+        name: `[+${sword.enhancement}] ${sword.initialName}`,
+      });
+    } else {
+      setSword({ ...sword, name: sword.initialName });
     }
   }
 
@@ -23,16 +29,27 @@ function App() {
     if (sword.enhancement !== 20) {
       setSword({ ...sword, enhancement: sword.enhancement++ });
     }
+    get();
   }
 
   function fail() {
     if (sword.enhancement < 15) {
-      setSword({ ...sword, enhancement: (sword.enhancement -= 5) });
+      if (sword.enhancement > 5) {
+        console.log("Here < 5");
+        setSword({ ...sword, enhancement: (sword.enhancement -= 5) });
+      } else if (sword.enhancement > 0) {
+        console.log("Here < 5");
+        setSword({ ...sword, enhancement: sword.enhancement-- });
+      } else {
+        setSword({ ...sword, enhancement: 0 });
+      }
     } else if (sword.enhancement > 15 && sword.enhancement <= 16) {
       setSword({ ...sword, enhancement: (sword.enhancement -= 10) });
     } else if (sword.enhancement > 16) {
       setSword({ ...sword, enhancement: sword.enhancement-- });
     }
+
+    get();
   }
 
   function repair() {
@@ -41,7 +58,16 @@ function App() {
 
   function pointAt(e) {
     if (e.target.name === "enhance") {
+      const decision = Math.floor(Math.random() * 10);
+
       if (coins > 10) {
+        if (decision < 5) {
+          console.log("Fail");
+          fail();
+        } else if (decision > 5) {
+          console.log("success");
+          success();
+        }
         document.getElementById("sword").classList.remove("img-left");
 
         document.getElementById("sword").classList.add("img-right");
@@ -94,7 +120,7 @@ function App() {
             Coins: {coins}
           </p>
           <i
-            class="fas fa-coins"
+            className="fas fa-coins"
             style={{
               color: "yellow",
               marginLeft: "2%",
@@ -128,9 +154,9 @@ function App() {
             ></i>
           </div>
           <div className="durability">
-            <p>Durability: {sword.enhancement}</p>
+            <p>Enhancement: {sword.enhancement}</p>
             <i
-              class="fas fa-magic"
+              className="fas fa-magic"
               style={{ marginLeft: "10px", color: "green", fontSize: "2rem" }}
             ></i>
           </div>
