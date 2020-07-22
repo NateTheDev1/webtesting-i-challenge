@@ -103,3 +103,37 @@ img {
     transform: rotate(80deg);
   }
 }
+
+.stats {
+  margin-top: 5%;
+}
+
+.stats p {
+  text-align: center;
+  color: white;
+  font-size: 1.6rem;
+}
+
+.stat-container {
+  margin: 0 auto;
+  width: 50%;
+  display: flex;
+  justify-content: space-around;
+}
+
+.stats h2 {
+  text-align: center;
+  text-transform: uppercase;
+  color: white;
+  border-top: 1px solid white;
+  border-bottom: 1px solid white;
+}
+
+.durability {
+  display: flex;
+  align-items: center;
+}
+
+span {
+  color: red;
+}
